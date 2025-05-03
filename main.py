@@ -30,7 +30,7 @@ import errors as _errors
 import al as _al
 
 # Cria O Cabeçalho (Lista Com Todos Os Tokens)
-header, symbol_position = _header.generate(open('input_language.txt', 'r').readlines())
+header, symbol_position, symbols_list = _header.generate(open('input_language.txt', 'r').readlines())
 # Cria O Autômato Finito Não Determinístico
 afnd, final_states = _afnd.generate(header, symbol_position)
 # Cria O Autômato Finito Determinístico
@@ -42,12 +42,10 @@ print('\n', 'AUTÔMATO FINITO DETERMINÍSTICO')
 pandas.DataFrame(afd).to_csv("afd.csv")
 print('\n', afd, '\n\n ESTADOS FINAIS\n\n', final_states)
 # Cria O Analisador Léxico
-al = _al.generate(afd)
-
-print(al)
-
+al, final_states = _al.generate(afd, final_states)
 # Interpreta A String De Entrada
-tape = _al.process(al, final_states, open('input_string.txt', 'r').readlines())
+tape = _al.process(al, final_states, symbols_list, open('input_string.txt', 'r').readlines())
 # Gera Um Arquivo .txt Da Fita De Saida & Imprime No Console
-open('tape.txt', 'w').write(tape)
+print('\n', 'FITA DE SAÍDA')
+open('tape.txt', 'w').write(str(tape))
 print('\n', tape, '\n')

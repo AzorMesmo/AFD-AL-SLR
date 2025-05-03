@@ -31,5 +31,5 @@ def generate(lines):
                         symbol_position[production[0]] = new_symbol_position
                         new_symbol_position += 1
     # Cria Um Matriz (Cabealho)
-    symbols = numpy.matrix(symbols)
-    return symbols, symbol_position
+    symbols_matrix = numpy.matrix(symbols)
+    return symbols_matrix, symbol_position, symbols
