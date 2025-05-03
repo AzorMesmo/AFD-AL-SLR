@@ -2,39 +2,38 @@ import numpy
 
 
 def generate():
-    file = open('input.txt', 'r')
+    # Le O Arquivo De Input
+    file = open('input_language.txt', 'r')
     lines = file.readlines()
-
-    dict_line = dict()
-
-    tokens = ['δ']
-    new_token = 1
-
+    file.close()
+    # Cria Os Parâmetros De Controle
+    symbol_position = dict()
+    symbols = ['δ']
+    new_symbol_position = 1
+    # Loop Principal (Linhas)
     for line in lines:
+        # Remove Caracteres Inúteis
         line = line.strip()
-
+        # Ignora Linhas Vazias
         if not line:
             continue
-
-        if line[0] != '{':  # Token
-            for token in line:
-                if token not in tokens:
-                    tokens.append(token)
-                    dict_line[token] = new_token
-                    new_token += 1
-        else:  # GR
-            is_token = False
-            for token in line:
-                if is_token:
-                    if token not in tokens and token != '&':
-                        tokens.append(token)
-                        dict_line[token] = new_token
-                        new_token += 1
-                    is_token = False
-                if token == "|":
-                    is_token = True
-
-    file.close()
-    tokens = numpy.matrix(tokens)
-
-    return tokens, dict_line
+        # If -> Palavra
+        if line[0] != '[':
+            for symbol in line:
+                if symbol not in symbols:
+                    symbols.append(symbol)
+                    symbol_position[symbol] = new_symbol_position
+                    new_symbol_position += 1
+        # Else -> Gramática
+        else:
+            productions = line.split('|')
+            for production in productions[1:]:
+                if production != '&':
+                    production = production.split('[')
+                    if production[0] not in symbols:
+                        symbols.append(production[0])
+                        symbol_position[production[0]] = new_symbol_position
+                        new_symbol_position += 1
+    # Cria Um Matriz (Cabealho)
+    symbols = numpy.matrix(symbols)
+    return symbols, symbol_position
