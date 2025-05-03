@@ -47,5 +47,5 @@ al, final_states = _al.generate(afd, final_states)
 tape = _al.process(al, final_states, symbols_list, open('input_string.txt', 'r').readlines())
 # Gera Um Arquivo .txt Da Fita De Saida & Imprime No Console
 print('\n', 'FITA DE SAÍDA')
-open('tape.txt', 'w').write(str(tape))
+open('output_tape.txt', 'w').write(str(tape))
 print('\n', tape, '\n')
