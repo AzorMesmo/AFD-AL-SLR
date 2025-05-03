@@ -1,11 +1,7 @@
 import numpy
 
 
-def generate():
-    # Le O Arquivo De Input
-    file = open('input_language.txt', 'r')
-    lines = file.readlines()
-    file.close()
+def generate(lines):
     # Cria Os Parâmetros De Controle
     symbol_position = dict()
     symbols = ['δ']

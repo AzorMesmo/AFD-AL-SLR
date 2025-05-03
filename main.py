@@ -21,23 +21,33 @@
 # [S]|a[A]|e[A]|i[A]|o[A]|u[A]
 # [A]|a[A]|e[A]|i[A]|o[A]|u[A]|&
 
-import header
-import afnd
-import afd
-import errors
 import pandas
 
-# Cria O Cabeçalho (Lista Com Todos Os Tokens)
-header, symbol_position = header.generate()
-# Cria O Autômato Finito Não Determinístico
-afnd, final_states = afnd.generate(header, symbol_position)
-# Cria O Autômato Finito Determinístico
-afd, final_states = afd.generate(afnd, header, symbol_position, final_states)
-# Cria O Estado De Erro E Suas Transições
-afd, final_states = errors.generate(afd, final_states)
-# Gera O Arquivo .csv Do AFD
-afnd_csv = pandas.DataFrame(afd)
-afnd_csv.to_csv("afd.csv")
+import header as _header
+import afnd as _afnd
+import afd as _afd
+import errors as _errors
+import al as _al
 
-print('\n', final_states)
-print('\n', afd)
+# Cria O Cabeçalho (Lista Com Todos Os Tokens)
+header, symbol_position = _header.generate(open('input_language.txt', 'r').readlines())
+# Cria O Autômato Finito Não Determinístico
+afnd, final_states = _afnd.generate(header, symbol_position)
+# Cria O Autômato Finito Determinístico
+afd, final_states = _afd.generate(afnd, header, symbol_position, final_states)
+# Cria O Estado De Erro E Suas Transições
+afd, final_states = _errors.generate(afd, final_states)
+# Gera Um Arquivo .csv Do AFD & Imprime No Console
+print('\n', 'AUTÔMATO FINITO DETERMINÍSTICO')
+pandas.DataFrame(afd).to_csv("afd.csv")
+print('\n', afd, '\n\n ESTADOS FINAIS\n\n', final_states)
+# Cria O Analisador Léxico
+al = _al.generate(afd)
+
+print(al)
+
+# Interpreta A String De Entrada
+tape = _al.process(al, final_states, open('input_string.txt', 'r').readlines())
+# Gera Um Arquivo .txt Da Fita De Saida & Imprime No Console
+open('tape.txt', 'w').write(tape)
+print('\n', tape, '\n')
