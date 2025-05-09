@@ -1,3 +1,5 @@
+# Mateus Azor, Daniel Salvini
+#
 # Símbolos De Controle
 # '[' Representa O Inicio Do Nome De Um Estado
 # ']' Representa O Final Do Nome De Um Estado
