@@ -7,8 +7,10 @@
 # '&' Representa ε
 # '#', '@' São Utilizados Na Lógica Do Programa
 # Obs.: As Gramáticas Devem Ser Escritas Antes Das Palavras
-# Obs.: GRs Devem Possuir Pelo Menos Dois Estados e Seguir O Padrão De Escrita Dos Exemplos À Seguir
+# Obs.: GRs Devem Possuir Pelo Menos Dois Estados E Seguir O Padrão De Escrita Dos Exemplos À Seguir
 # Obs.: Além Disso GRs Terminando Com Símbolos Terminais Ao Invés De & (Exemplo: [S]|a|b) Não São Suportadas
+#
+# Obs.: Os Arquivos De Entrada Devem Terminar Com Uma Linha Em Branco (\n)
 #
 # [ARITHMETIC_OPERATORS] <- Label (Nome Dos Tokens Identificados)
 # [S]|+[A]|-[A]|*[A]|/[A] <- [Nome Da Regra]|PRODUÇÃO[Estado]|PRODUÇÃO[Estado]|...
@@ -30,6 +32,7 @@ import afnd as _afnd
 import afd as _afd
 import errors as _errors
 import al as _al
+import slr as _slr
 
 # Cria O Cabeçalho (Lista Com Todos Os Tokens)
 header, symbol_position, symbols_list = _header.generate(open('input_language.txt', 'r').readlines())
@@ -50,4 +53,7 @@ tape = _al.process(al, final_states, symbols_list, open('input_string.txt', 'r')
 # Gera Um Arquivo .txt Da Fita De Saida & Imprime No Console
 print('\n', 'FITA DE SAÍDA')
 open('output_tape.txt', 'w').write(str(tape))
-print('\n', tape, '\n')
+print('\n', tape)
+slr_list = _slr.parse(tape)
+print('\n', 'ANÁLISE SLR')
+print('\n', slr_list)
